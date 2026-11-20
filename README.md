@@ -8,13 +8,16 @@ companion that pairs nicely with Litematica.
 Look at any wall, floor, or ceiling and press **K** (rebindable in Controls → Surface Muse).
 A menu opens with design suggestions for that surface type:
 
-- Each suggestion has a **preview grid rendered with real block sprites** — the base
-  block is the one you looked at, plus like-for-like detail and accent blocks chosen by
-  the ranking engine (see below). Each suggestion also shows *why* the detail block was
-  picked (same block family / matching texture style / matching color band) with a fit
-  percentage.
-- Press **P** to smart-place the selected design directly onto the surface (see below),
-  or Enter/click to print the block palette to chat — or drop it into a Litematic.
+- A vanilla-styled browser (classic beveled gray panel, inventory-style item slots,
+  hover highlights, real Minecraft buttons): each suggestion lists with its detail
+  block's sprite, and the right pane shows a **preview grid rendered with real block
+  sprites** — your base block plus the engine's detail/accent picks, plus *why* the
+  detail block was picked (same block family / matching texture style / matching color
+  band with a fit percentage).
+- Press **P** (or the green **Place** button) to smart-place the selected design
+  directly onto the surface (see below).
+- Enter or clicking the selected row prints the block palette to chat — useful for
+  dropping into a Litematic workflow.
 - Browse with arrow keys, scroll wheel, or clicking the list.
 
 ## How smart placement works
