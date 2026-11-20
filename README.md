@@ -13,7 +13,6 @@ A menu opens with design suggestions for that surface type:
   the ranking engine (see below). Each suggestion also shows *why* the detail block was
   picked (same block family / matching texture style / matching color band) with a fit
   percentage.
-- Browse with arrow keys, scroll wheel, or clicking the list.
 - Press **P** to smart-place the selected design directly onto the surface (see below),
   or Enter/click to print the block palette to chat — or drop it into a Litematic.
 - Browse with arrow keys, scroll wheel, or clicking the list.
