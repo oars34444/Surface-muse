@@ -43,7 +43,10 @@ public final class SuggestionEngine {
 
         public String explanation() {
             String why;
-            if (tokenScore > 15) {
+            double guide = total - (tokenScore + colorScore + classScore + contrast);
+            if (guide > 45) {
+                why = "builder-guide proven pairing";
+            } else if (tokenScore > 15) {
                 why = "same block family";
             } else if (classScore > 12) {
                 why = "matching texture style";
@@ -215,6 +218,11 @@ public final class SuggestionEngine {
             double classScore;
             double contrast = 0;
 
+            String candidateId = name(candidate);
+            double guideScore = StyleKnowledge.get()
+                    .provenBonus(baseId, candidateId, accentRole)
+                    + StyleKnowledge.get().textureFit(baseId, candidateId, accentRole);
+
             if (accentRole) {
                 tokenScore = 14.0 * jaccard(baseTokens, f.tokens());
                 classScore = ACCENT_CLASSES.contains(f.materialClass()) ? 28.0 : 0.0;
@@ -227,7 +235,7 @@ public final class SuggestionEngine {
 
             scored.add(new Scored(candidate, f.tokens(), f.materialClass(),
                     tokenScore, colorScore, classScore, contrast,
-                    tokenScore + colorScore + classScore + contrast));
+                    tokenScore + colorScore + classScore + contrast + guideScore));
         }
         scored.sort((a, b) -> Double.compare(b.total(), a.total()));
         return scored;
