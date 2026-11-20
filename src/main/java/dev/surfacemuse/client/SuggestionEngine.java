@@ -199,6 +199,7 @@ public final class SuggestionEngine {
      * for deliberate contrast (metals, lights, glass, wool).
      */
     public static List<Scored> scoreAll(BlockState base, List<Block> pool,
+                                         Surroundings.Context context,
                                          boolean accentRole) {
         Block baseBlock = base.getBlock();
         String baseId = name(baseBlock);
@@ -221,7 +222,8 @@ public final class SuggestionEngine {
             String candidateId = name(candidate);
             double guideScore = StyleKnowledge.get()
                     .provenBonus(baseId, candidateId, accentRole)
-                    + StyleKnowledge.get().textureFit(baseId, candidateId, accentRole);
+                    + StyleKnowledge.get().textureFit(baseId, candidateId, accentRole)
+                    + contextScore(candidateId, context, accentRole);
 
             if (accentRole) {
                 tokenScore = 14.0 * jaccard(baseTokens, f.tokens());
@@ -239,6 +241,43 @@ public final class SuggestionEngine {
         }
         scored.sort((a, b) -> Double.compare(b.total(), a.total()));
         return scored;
+    }
+
+    /**
+     * Context harmony: candidates that already appear nearby (existing theme
+     * members), that proven-pair with the room's standing palette, or whose
+     * warm/cool character agrees with it, float upward. Capped so context can
+     * tilt the ranking, never swamp it.
+     */
+    public static double contextScore(String candidateId, Surroundings.Context context,
+                                       boolean accentRole) {
+        if (context == null || candidateId == null) {
+            return 0;
+        }
+        double score = 0;
+        for (var entry : context.top().entrySet()) {
+            String ctxId = entry.getKey();
+            double weight = entry.getValue();
+            if (candidateId.equals(ctxId)) {
+                score += 26.0 * weight;
+            }
+            score += 0.5 * StyleKnowledge.get()
+                    .provenBonus(ctxId, candidateId, accentRole) * weight;
+        }
+        if (!accentRole) {
+            String candTemp = StyleKnowledge.get().temperatureOf(candidateId);
+            if (candTemp != null && context.temperature() != null) {
+                if (candTemp.equals(context.temperature())) {
+                    score += 6.0;
+                } else if ("neutral".equals(candTemp)
+                        || "neutral".equals(context.temperature())) {
+                    score += 2.0;
+                } else {
+                    score -= 6.0;
+                }
+            }
+        }
+        return Math.min(Math.max(score, -12.0), 45.0);
     }
 
     private static final Set<String> ACCENT_CLASSES =

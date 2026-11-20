@@ -56,6 +56,22 @@ Pressing **P** with a design selected doesn't dumbly stamp blocks — `SmartPlac
    servers, creative players can place via `setblock` commands (silently no-ops without
    permission).
 
+## Context awareness
+
+Suggestions are not made in isolation. `Surroundings` scans the build around the
+clicked surface (a weighted ~17x13x17 neighborhood; closer blocks count more),
+learns the room's standing palette (filtering the base block and terrain noise
+like dirt/stone/water), and its dominant warm/cool temperature. The engine then
+boosts candidates that:
+
+- are already part of that palette (matching the existing theme),
+- pair well with its members according to the guide knowledge base, and
+- agree with the room's color temperature.
+
+The menu header shows what was detected ("Base: Stone Bricks - nearby: Spruce
+Log, Lantern"), and the chat palette dump includes it too. Capped so context
+tilts the ranking without swamping the base material's own fit.
+
 ## Pairing with Litematica
 
 Surface Muse is client-side only, like Litematica, so it works in singleplayer and on any
