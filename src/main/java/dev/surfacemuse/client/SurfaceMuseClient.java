@@ -2,6 +2,8 @@ package dev.surfacemuse.client;
 
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -40,14 +42,16 @@ public class SurfaceMuseClient implements ClientModInitializer {
             message(client, "surfacemuse.no_target");
             return;
         }
-        BlockState base = client.level.getBlockState(blockHit.getBlockPos());
-        var suggestions = DesignData.suggest(base, blockHit.getDirection());
+        BlockPos anchor = blockHit.getBlockPos();
+        Direction face = blockHit.getDirection();
+        BlockState base = client.level.getBlockState(anchor);
+        var suggestions = DesignData.suggest(base, face);
         if (suggestions.isEmpty()) {
             message(client, "surfacemuse.unsupported");
             return;
         }
-        var kind = DesignData.kindOf(blockHit.getDirection());
-        client.setScreen(new DesignScreen(base, kind, suggestions));
+        var kind = DesignData.kindOf(face);
+        client.setScreen(new DesignScreen(base, kind, suggestions, anchor, face));
     }
 
     private static void message(Minecraft client, String key) {

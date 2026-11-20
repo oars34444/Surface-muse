@@ -5,6 +5,8 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import org.lwjgl.glfw.GLFW;
 
@@ -25,6 +27,8 @@ public class DesignScreen extends Screen {
     private final String kindLabel;
     private final DesignData.SurfaceKind kind;
     private final List<DesignData.Suggestion> suggestions;
+    private final BlockPos anchor;
+    private final Direction face;
     private final Map<Block, ItemStack> stackCache = new HashMap<>();
 
     private int selected = 0;
@@ -33,12 +37,15 @@ public class DesignScreen extends Screen {
     private final List<Integer> rowBottoms = new ArrayList<>();
 
     public DesignScreen(BlockState baseState, DesignData.SurfaceKind kind,
-                        List<DesignData.Suggestion> suggestions) {
+                        List<DesignData.Suggestion> suggestions, BlockPos anchor,
+                        Direction face) {
         super(Component.literal("Surface Muse - " + kind.label + " suggestions"));
         this.baseState = baseState;
         this.kind = kind;
         this.kindLabel = kind.label;
         this.suggestions = suggestions;
+        this.anchor = anchor;
+        this.face = face;
     }
 
     @Override
@@ -98,7 +105,7 @@ public class DesignScreen extends Screen {
                 Component.literal(sel.design().desc()),
                 previewX, textY + 50, 0x909090);
         guiGraphics.drawString(this.font,
-                Component.literal("Up/Down: browse - Click/Enter: send block list to chat - Esc: close"),
+                Component.literal("Up/Down: browse - P: place on the surface - Click/Enter: send block list to chat - Esc: close"),
                 previewX, textY + 64, 0x707070);
     }
 
@@ -154,7 +161,36 @@ public class DesignScreen extends Screen {
             this.onClose();
             return true;
         }
+        if (keyCode == GLFW.GLFW_KEY_P) {
+            applySelected();
+            return true;
+        }
         return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    private void applySelected() {
+        if (this.minecraft == null || this.minecraft.level == null) {
+            return;
+        }
+        DesignData.Suggestion sel = suggestions.get(selected);
+        SmartPlacer.Plan plan = SmartPlacer.plan(
+                this.minecraft.level,
+                anchor,
+                face,
+                baseState.getBlock(),
+                sel.design(),
+                sel.secondary(),
+                sel.accent());
+        int result = SmartPlacer.apply(this.minecraft, plan);
+        if (result > 0 && this.minecraft.player != null) {
+            this.minecraft.player.displayClientMessage(
+                    Component.literal("[Surface Muse] applied " + sel.design().title()
+                            + " - " + result + " blocks placed ("
+                            + plan.surface().width() + "x" + plan.surface().height()
+                            + " region)"),
+                    true);
+            this.onClose();
+        }
     }
 
     private void clampScroll() {

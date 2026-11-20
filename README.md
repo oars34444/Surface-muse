@@ -14,15 +14,39 @@ A menu opens with design suggestions for that surface type:
   picked (same block family / matching texture style / matching color band) with a fit
   percentage.
 - Browse with arrow keys, scroll wheel, or clicking the list.
-- Press Enter (or click a suggestion) to print the full block palette to chat so you can
-  grab the blocks and build — or drop them into a Litematica schematic palette.
+- Press **P** to smart-place the selected design directly onto the surface (see below),
+  or Enter/click to print the block palette to chat — or drop it into a Litematic.
+- Browse with arrow keys, scroll wheel, or clicking the list.
+
+## How smart placement works
+
+Pressing **P** with a design selected doesn't dumbly stamp blocks — `SmartPlacer`:
+
+1. **Discovers the region** — scans from the clicked block along the surface tangent and
+   down to the surface base to learn how far the wall/floor actually extends (capped 12×12),
+   so a 4-block strip gets a 4-block design, not a floating stamp.
+2. **Anchors the pattern** — designs are vertically anchored to the surface's bottom edge
+   (wainscot bands sit at the base as drawn) and tile modulo their period, so applying the
+   design on adjacent tiles stays seamless.
+3. **Replaces only like-for-like cells** — a cell is painted only if its current block is
+   structural material of the same family as your base block. Air, glass, doors, chests,
+   trapdoors, stairs, fences and other functional blocks are never touched: windows and
+   doorways simply show through the design.
+4. **Writes only detail/accent cells** — cells the pattern marks as base (`p`) are left
+   exactly as you built them.
+5. **Checks materials first** — in survival the full requirement is counted and validated
+   before anything changes; a missing material cancels the whole placement with an itemized
+   shortage. In survival, blocks are consumed from your inventory; in creative it's free.
+6. **Stays in sync** — singleplayer places through the integrated server's level; on
+   servers, creative players can place via `setblock` commands (silently no-ops without
+   permission).
 
 ## Pairing with Litematica
 
 Surface Muse is client-side only, like Litematica, so it works in singleplayer and on any
 server without installation. A natural workflow:
 
-1. Pick a design above and note its block palette.
+1. Pick a design above and smart-place it, or note its block palette.
 2. In Litematica, make a small selection of your wall/floor area.
 3. Use Litematica's **Replace Blocks** tool or a saved schematic to apply just the trim
    blocks, then hand-place the accents.
