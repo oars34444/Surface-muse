@@ -271,6 +271,7 @@ public class DesignScreen extends Screen {
             return;
         }
         DesignData.Suggestion sel = suggestions.get(selected);
+        String nearby = Surroundings.summary(context);
         this.minecraft.player.displayClientMessage(
                 Component.literal("[Surface Muse] " + kind.label + ": "
                         + sel.design().title()
