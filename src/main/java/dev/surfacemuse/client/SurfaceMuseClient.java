@@ -45,13 +45,15 @@ public class SurfaceMuseClient implements ClientModInitializer {
         BlockPos anchor = blockHit.getBlockPos();
         Direction face = blockHit.getSide();
         BlockState base = client.world.getBlockState(anchor);
-        var suggestions = DesignData.suggest(base, face);
+        Surroundings.Context context = Surroundings.scan(client.world, anchor, face);
+        var suggestions = DesignData.suggest(base, face, context);
         if (suggestions.isEmpty()) {
             message(client, "surfacemuse.unsupported");
             return;
         }
         var kind = DesignData.kindOf(face);
-        client.setScreen(new DesignScreen(base, kind, suggestions, anchor, face));
+        client.setScreen(new DesignScreen(base, kind, suggestions, anchor, face,
+                context));
     }
 
     private static void message(MinecraftClient client, String key) {
