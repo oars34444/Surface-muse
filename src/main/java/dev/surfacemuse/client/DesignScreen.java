@@ -271,6 +271,7 @@ public class DesignScreen extends Screen {
             return;
         }
         DesignData.Suggestion sel = suggestions.get(selected);
+        String nearbySummary = Surroundings.summary(context);
         this.client.player.displayClientMessage(
                 Text.literal("[Surface Muse] " + kind.label + ": "
                         + sel.design().title()
