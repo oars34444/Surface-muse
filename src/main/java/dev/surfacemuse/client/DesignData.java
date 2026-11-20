@@ -1,9 +1,6 @@
 package dev.surfacemuse.client;
 
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -27,7 +24,8 @@ public final class DesignData {
     public record Design(String id, String title, String desc, List<String> pattern) {
     }
 
-    public record Suggestion(Design design, Block secondary, Block accent) {
+    public record Suggestion(Design design, SuggestionEngine.Scored secondary,
+                               SuggestionEngine.Scored accent) {
     }
 
     private DesignData() {
@@ -206,65 +204,34 @@ public final class DesignData {
                 "pppppp",
                 "ppappp")));
 
+    /**
+     * Runs the ranking engine and pairs each design with its own detail and
+     * accent pick, both drawn from diversified ranked lists so every design
+     * previews a distinct palette.
+     */
     public static List<Suggestion> suggest(BlockState state, Direction side) {
-        List<Suggestion> out = new ArrayList<>();
-        for (Design design : designsFor(kindOf(side))) {
-            Block secondary = firstExisting(secondaryCandidates(state), state);
-            Block accent = firstExisting(accentCandidates(state), state);
-            if (secondary == null) {
-                continue;
-            }
-            out.add(new Suggestion(design, secondary, accent));
+        List<Design> designs = designsFor(kindOf(side));
+        List<Block> pool = PalettePool.resolve();
+        if (pool.isEmpty()) {
+            return List.of();
+        }
+
+        int count = designs.size();
+        List<SuggestionEngine.Scored> details = SuggestionEngine.diversify(
+                SuggestionEngine.scoreAll(state, pool, false), count);
+        List<SuggestionEngine.Scored> accents = SuggestionEngine.diversify(
+                SuggestionEngine.scoreAll(state, pool, true), count);
+        if (details.isEmpty() || accents.isEmpty()) {
+            return List.of();
+        }
+
+        List<Suggestion> out = new ArrayList<>(count);
+        for (int i = 0; i < count; i++) {
+            SuggestionEngine.Scored detail = details.get(Math.min(i, details.size() - 1));
+            SuggestionEngine.Scored accent = accents.get(Math.min(i, accents.size() - 1));
+            out.add(new Suggestion(designs.get(i), detail, accent));
         }
         return out;
     }
 
-    private static Block firstExisting(List<String> ids, BlockState deny) {
-        for (String id : ids) {
-            Block block = BuiltInRegistries.BLOCK
-                    .get(ResourceLocation.fromNamespaceAndPath("minecraft", id));
-            if (block != null && (deny == null || block != deny.getBlock())) {
-                return block;
-            }
-        }
-        return null;
-    }
-
-    private static String name(Block block) {
-        return BuiltInRegistries.BLOCK.getKey(block).getPath();
-    }
-
-    private static List<String> secondaryCandidates(BlockState state) {
-        String blockName = name(state.getBlock());
-        if (blockName.endsWith("_planks")) {
-            String wood = blockName.substring(0, blockName.length() - "_planks".length());
-            return List.of(wood + "_log", "stripped_" + wood + "_log", wood + "_planks");
-        }
-        if (blockName.contains("brick")) {
-            return List.of("chiseled_stone_bricks", "deepslate_tiles", "tuff_bricks",
-                    "polished_blackstone_bricks", "mossy_stone_bricks", "cracked_stone_bricks");
-        }
-        if (blockName.contains("deepslate") || blockName.contains("tuff")
-                || blockName.contains("blackstone")) {
-            return List.of("polished_deepslate", "deepslate_bricks", "polished_tuff",
-                    "polished_blackstone", "deepslate_tiles");
-        }
-        if (blockName.contains("sandstone") || blockName.contains("_terracotta")
-                || blockName.contains("quartz")) {
-            return List.of("chiseled_sandstone", "chiseled_quartz_block", "smooth_sandstone",
-                    "smooth_quartz", "smooth_stone");
-        }
-        return List.of("stone_bricks", "chiseled_stone_bricks", "smooth_stone",
-                "andesite", "tuff", "calcite");
-    }
-
-    private static List<String> accentCandidates(BlockState state) {
-        String blockName = name(state.getBlock());
-        if (blockName.endsWith("_planks")) {
-            String wood = blockName.substring(0, blockName.length() - "_planks".length());
-            return List.of(wood + "_fence", wood + "_trapdoor", "stripped_" + wood + "_wood");
-        }
-        return List.of("iron_bars", "chain", "lantern", "sea_lantern",
-                "polished_andesite", "smooth_stone");
-    }
 }

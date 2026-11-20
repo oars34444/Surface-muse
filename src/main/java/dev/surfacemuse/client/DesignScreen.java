@@ -83,26 +83,29 @@ public class DesignScreen extends Screen {
                 Component.translatable("surfacemuse.parent_block", baseState.getBlock().getName()),
                 previewX, textY, 0xB0B0B0);
         guiGraphics.drawString(this.font,
-                Component.translatable("surfacemuse.secondary", sel.secondary().getName()),
+                Component.translatable("surfacemuse.secondary", sel.secondary().block().getName()),
                 previewX, textY + 12, 0xB0B0B0);
         if (sel.accent() != null) {
             guiGraphics.drawString(this.font,
-                    Component.translatable("surfacemuse.accent", sel.accent().getName()),
+                    Component.translatable("surfacemuse.accent", sel.accent().block().getName()),
                     previewX, textY + 24, 0xB0B0B0);
         }
 
         guiGraphics.drawString(this.font,
+                Component.literal(sel.secondary().explanation()),
+                previewX, textY + 38, 0x8CBF9E);
+        guiGraphics.drawString(this.font,
                 Component.literal(sel.design().desc()),
-                previewX, textY + 40, 0x909090);
+                previewX, textY + 50, 0x909090);
         guiGraphics.drawString(this.font,
                 Component.literal("Up/Down: browse - Click/Enter: send block list to chat - Esc: close"),
-                previewX, textY + 54, 0x707070);
+                previewX, textY + 64, 0x707070);
     }
 
     private ItemStack stackFor(char c, DesignData.Suggestion suggestion) {
         Block target = switch (c) {
-            case 's' -> suggestion.secondary();
-            case 'a' -> suggestion.accent();
+            case 's' -> suggestion.secondary().block();
+            case 'a' -> suggestion.accent().block();
             default -> baseState.getBlock();
         };
         if (target == null) {
@@ -170,9 +173,10 @@ public class DesignScreen extends Screen {
                     Component.literal("[Surface Muse] " + kindLabel + ": "
                             + sel.design().title()
                             + " | base: " + baseState.getBlock().getName().getString()
-                            + " | detail: " + sel.secondary().getName().getString()
+                            + " | detail: " + sel.secondary().block().getName().getString()
+                            + " (" + sel.secondary().explanation() + ")"
                             + (sel.accent() != null
-                                    ? " | accent: " + sel.accent().getName().getString()
+                                    ? " | accent: " + sel.accent().block().getName().getString()
                                     : "")),
                     false);
         }
