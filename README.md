@@ -10,6 +10,7 @@ Each Minecraft version lives on its own branch:
 | Branch | Minecraft | Mappings | JDK | Loom plugin |
 |---|---|---|---|---|
 | `main` | 26.3 | Mojang (unobfuscated) | 25 | `net.fabricmc.fabric-loom` |
+| `v/26.2` | 26.2 | Mojang (unobfuscated) | 25 | `net.fabricmc.fabric-loom` |
 | `v/1.21.11` | 1.21.11 | Yarn `1.21.11+build.6` | 21 | `fabric-loom` |
 | `v/1.21.1` | 1.21.1 | Yarn `1.21.1+build.3` | 21 | `fabric-loom` |
 
