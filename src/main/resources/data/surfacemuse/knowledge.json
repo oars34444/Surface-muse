@@ -1,0 +1,719 @@
+{
+ "pairings": {
+  "stone_bricks": {
+   "secondary": [
+    "cobbled_deepslate",
+    "deepslate_bricks",
+    "cracked_stone_bricks",
+    "mossy_stone_bricks",
+    "smooth_stone",
+    "andesite",
+    "dark_oak_planks",
+    "cobblestone"
+   ],
+   "accent": [
+    "dark_oak_log",
+    "dark_oak_trapdoor",
+    "lantern",
+    "chain",
+    "iron_bars",
+    "gray_stained_glass_pane",
+    "spruce_trapdoor"
+   ]
+  },
+  "spruce_planks": {
+   "secondary": [
+    "cobblestone",
+    "stone_bricks",
+    "stripped_spruce_log",
+    "cobbled_deepslate",
+    "mossy_cobblestone",
+    "bricks"
+   ],
+   "accent": [
+    "spruce_trapdoor",
+    "lantern",
+    "bricks",
+    "cobblestone",
+    "campfire"
+   ]
+  },
+  "dark_oak_planks": {
+   "secondary": [
+    "stone_bricks",
+    "deepslate_bricks",
+    "stripped_dark_oak_log",
+    "spruce_log"
+   ],
+   "accent": [
+    "lantern",
+    "spruce_trapdoor",
+    "iron_bars",
+    "chain"
+   ]
+  },
+  "oak_planks": {
+   "secondary": [
+    "stripped_oak_log",
+    "cobblestone",
+    "mud_bricks",
+    "stone_bricks",
+    "bricks"
+   ],
+   "accent": [
+    "lantern",
+    "rooted_dirt",
+    "spruce_trapdoor",
+    "torch"
+   ]
+  },
+  "birch_planks": {
+   "secondary": [
+    "stripped_birch_log",
+    "calcite",
+    "white_concrete",
+    "smooth_quartz",
+    "spruce_log"
+   ],
+   "accent": [
+    "lime_concrete",
+    "blackstone",
+    "lantern"
+   ]
+  },
+  "smooth_sandstone": {
+   "secondary": [
+    "terracotta",
+    "cut_red_sandstone",
+    "chiseled_sandstone",
+    "cut_sandstone",
+    "sandstone",
+    "smooth_quartz"
+   ],
+   "accent": [
+    "light_blue_terracotta",
+    "yellow_terracotta",
+    "orange_concrete",
+    "chiseled_sandstone",
+    "sandstone_wall"
+   ]
+  },
+  "polished_deepslate": {
+   "secondary": [
+    "deepslate_tiles",
+    "deepslate_bricks",
+    "waxed_exposed_cut_copper",
+    "exposed_cut_copper",
+    "smooth_basalt",
+    "tuff_bricks"
+   ],
+   "accent": [
+    "copper_bulb",
+    "copper_grate",
+    "copper_trapdoor",
+    "lightning_rod",
+    "polished_blackstone_bricks",
+    "sea_lantern"
+   ]
+  },
+  "deepslate_bricks": {
+   "secondary": [
+    "polished_deepslate",
+    "cobbled_deepslate",
+    "deepslate_tiles",
+    "basalt",
+    "tuff_bricks",
+    "polished_basalt"
+   ],
+   "accent": [
+    "warped_planks",
+    "soul_lantern",
+    "crying_obsidian",
+    "lightning_rod",
+    "chain"
+   ]
+  },
+  "deepslate_tiles": {
+   "secondary": [
+    "polished_blackstone",
+    "deepslate_bricks",
+    "polished_deepslate",
+    "blackstone",
+    "smooth_basalt"
+   ],
+   "accent": [
+    "gold_block",
+    "soul_lantern",
+    "sea_lantern",
+    "magma_block"
+   ]
+  },
+  "white_concrete": {
+   "secondary": [
+    "spruce_planks",
+    "stripped_spruce_log",
+    "gray_concrete",
+    "smooth_quartz",
+    "pale_oak_planks",
+    "calcite"
+   ],
+   "accent": [
+    "black_concrete",
+    "lime_concrete",
+    "gray_stained_glass_pane",
+    "tinted_glass",
+    "deepslate_tiles"
+   ]
+  },
+  "terracotta": {
+   "secondary": [
+    "smooth_sandstone",
+    "cut_red_sandstone",
+    "white_terracotta",
+    "orange_terracotta",
+    "light_gray_terracotta",
+    "mud_bricks"
+   ],
+   "accent": [
+    "light_blue_terracotta",
+    "light_blue_concrete",
+    "orange_concrete",
+    "red_sandstone"
+   ]
+  },
+  "bricks": {
+   "secondary": [
+    "stone_bricks",
+    "mud_bricks",
+    "spruce_planks",
+    "cobblestone",
+    "packed_mud"
+   ],
+   "accent": [
+    "weathered_copper",
+    "spruce_trapdoor",
+    "copper_trapdoor",
+    "lantern"
+   ]
+  },
+  "quartz_block": {
+   "secondary": [
+    "prismarine",
+    "smooth_quartz",
+    "calcite",
+    "chiseled_quartz_block",
+    "quartz_pillar"
+   ],
+   "accent": [
+    "sea_lantern",
+    "prismarine_bricks",
+    "gray_stained_glass_pane"
+   ]
+  },
+  "smooth_quartz": {
+   "secondary": [
+    "gray_concrete",
+    "quartz_bricks",
+    "white_concrete",
+    "calcite",
+    "quartz_pillar"
+   ],
+   "accent": [
+    "tinted_glass",
+    "black_concrete",
+    "flowering_azalea_leaves"
+   ]
+  },
+  "blackstone": {
+   "secondary": [
+    "crimson_planks",
+    "polished_blackstone",
+    "basalt",
+    "polished_blackstone_bricks",
+    "cracked_nether_bricks"
+   ],
+   "accent": [
+    "shroomlight",
+    "soul_lantern",
+    "gold_block",
+    "crying_obsidian"
+   ]
+  },
+  "nether_bricks": {
+   "secondary": [
+    "red_nether_bricks",
+    "blackstone",
+    "basalt",
+    "cracked_nether_bricks",
+    "crimson_planks"
+   ],
+   "accent": [
+    "magma_block",
+    "soul_lantern",
+    "shroomlight",
+    "gold_block"
+   ]
+  },
+  "obsidian": {
+   "secondary": [
+    "crying_obsidian",
+    "end_stone_bricks",
+    "blackstone",
+    "polished_blackstone",
+    "deepslate_tiles"
+   ],
+   "accent": [
+    "end_stone_bricks",
+    "shroomlight",
+    "purple_concrete"
+   ]
+  },
+  "deepslate": {
+   "secondary": [
+    "cobbled_deepslate",
+    "smooth_basalt",
+    "tuff",
+    "cobblestone",
+    "stone",
+    "deepslate_bricks",
+    "stone_bricks"
+   ],
+   "accent": [
+    "basalt",
+    "calcite",
+    "tuff_bricks",
+    "deepslate_tiles"
+   ]
+  },
+  "calcite": {
+   "secondary": [
+    "cherry_planks",
+    "smooth_basalt",
+    "pale_oak_planks",
+    "smooth_stone",
+    "white_concrete"
+   ],
+   "accent": [
+    "pink_petals",
+    "cherry_log",
+    "moss_block",
+    "flowering_azalea_leaves"
+   ]
+  },
+  "cherry_planks": {
+   "secondary": [
+    "stripped_cherry_log",
+    "calcite",
+    "pink_wool",
+    "smooth_stone",
+    "bamboo_planks"
+   ],
+   "accent": [
+    "pink_petals",
+    "pink_terracotta",
+    "pink_concrete"
+   ]
+  },
+  "light_gray_concrete": {
+   "secondary": [
+    "polished_andesite",
+    "smooth_stone",
+    "white_concrete",
+    "gray_concrete",
+    "calcite"
+   ],
+   "accent": [
+    "deepslate_tiles",
+    "black_concrete",
+    "spruce_trapdoor"
+   ]
+  },
+  "yellow_terracotta": {
+   "secondary": [
+    "orange_terracotta",
+    "red_sand",
+    "smooth_sandstone",
+    "terracotta",
+    "white_terracotta"
+   ],
+   "accent": [
+    "orange_concrete",
+    "red_sand",
+    "red_sandstone"
+   ]
+  },
+  "light_blue_concrete": {
+   "secondary": [
+    "white_concrete",
+    "packed_ice",
+    "snow_block",
+    "light_blue_terracotta",
+    "smooth_quartz"
+   ],
+   "accent": [
+    "packed_ice",
+    "blue_ice",
+    "cyan_concrete"
+   ]
+  },
+  "mud_bricks": {
+   "secondary": [
+    "stripped_oak_log",
+    "packed_mud",
+    "spruce_planks",
+    "mud_brick_slab",
+    "oak_planks"
+   ],
+   "accent": [
+    "rooted_dirt",
+    "moss_block",
+    "lantern",
+    "oak_trapdoor"
+   ]
+  },
+  "tuff_bricks": {
+   "secondary": [
+    "chiseled_tuff",
+    "polished_tuff",
+    "polished_deepslate",
+    "cobbled_deepslate",
+    "stone_bricks"
+   ],
+   "accent": [
+    "copper_bulb",
+    "lantern",
+    "waxed_exposed_copper"
+   ]
+  },
+  "waxed_exposed_copper": {
+   "secondary": [
+    "waxed_exposed_cut_copper",
+    "polished_deepslate",
+    "cut_copper",
+    "waxed_copper_block",
+    "copper_grate"
+   ],
+   "accent": [
+    "copper_bulb",
+    "lightning_rod",
+    "copper_trapdoor",
+    "tuff_bricks"
+   ]
+  },
+  "prismarine": {
+   "secondary": [
+    "prismarine_bricks",
+    "dark_prismarine",
+    "sea_lantern",
+    "quartz_block"
+   ],
+   "accent": [
+    "sea_lantern",
+    "prismarine_bricks",
+    "cyan_terracotta"
+   ]
+  },
+  "crimson_planks": {
+   "secondary": [
+    "stripped_crimson_stem",
+    "blackstone",
+    "nether_bricks",
+    "shroomlight"
+   ],
+   "accent": [
+    "shroomlight",
+    "soul_lantern",
+    "crying_obsidian"
+   ]
+  },
+  "warped_planks": {
+   "secondary": [
+    "stripped_warped_stem",
+    "deepslate_bricks",
+    "cobbled_deepslate",
+    "polished_blackstone"
+   ],
+   "accent": [
+    "soul_lantern",
+    "sea_lantern",
+    "crying_obsidian"
+   ]
+  },
+  "poplar_planks": {
+   "secondary": [
+    "stripped_poplar_log",
+    "andesite",
+    "tuff",
+    "cobbled_deepslate",
+    "calcite"
+   ],
+   "accent": [
+    "waxed_exposed_copper",
+    "lantern",
+    "moss_block"
+   ]
+  },
+  "pale_oak_planks": {
+   "secondary": [
+    "stripped_pale_oak_log",
+    "calcite",
+    "smooth_basalt",
+    "white_concrete",
+    "smooth_stone"
+   ],
+   "accent": [
+    "blackstone",
+    "deepslate_tiles",
+    "resin_block",
+    "resin_clump"
+   ]
+  },
+  "cobblestone": {
+   "secondary": [
+    "mossy_cobblestone",
+    "stone_bricks",
+    "andesite",
+    "cobbled_deepslate",
+    "stone"
+   ],
+   "accent": [
+    "lantern",
+    "spruce_trapdoor",
+    "moss_block"
+   ]
+  },
+  "end_stone_bricks": {
+   "secondary": [
+    "purpur_block",
+    "end_stone",
+    "purpur_pillar",
+    "quartz_block"
+   ],
+   "accent": [
+    "purple_concrete",
+    "crying_obsidian",
+    "sea_lantern"
+   ]
+  },
+  "polished_blackstone": {
+   "secondary": [
+    "polished_blackstone_bricks",
+    "chiseled_polished_blackstone",
+    "blackstone",
+    "deepslate_tiles"
+   ],
+   "accent": [
+    "gold_block",
+    "soul_lantern",
+    "gilded_blackstone"
+   ]
+  }
+ },
+ "noise": {
+  "white_concrete": "flat",
+  "light_gray_concrete": "flat",
+  "gray_concrete": "flat",
+  "black_concrete": "flat",
+  "lime_concrete": "flat",
+  "light_blue_concrete": "flat",
+  "orange_concrete": "flat",
+  "pink_concrete": "flat",
+  "yellow_concrete": "flat",
+  "purple_concrete": "flat",
+  "smooth_stone": "flat",
+  "smooth_sandstone": "flat",
+  "cut_sandstone": "flat",
+  "smooth_quartz": "flat",
+  "quartz_bricks": "flat",
+  "polished_deepslate": "flat",
+  "polished_andesite": "flat",
+  "polished_blackstone": "flat",
+  "polished_granite": "flat",
+  "polished_diorite": "flat",
+  "polished_tuff": "flat",
+  "polished_basalt": "flat",
+  "smooth_basalt": "flat",
+  "cut_red_sandstone": "flat",
+  "stone_bricks": "mid",
+  "cracked_stone_bricks": "mid",
+  "mossy_stone_bricks": "mid",
+  "deepslate_bricks": "mid",
+  "deepslate_tiles": "mid",
+  "tuff_bricks": "mid",
+  "mud_bricks": "mid",
+  "packed_mud": "mid",
+  "bricks": "mid",
+  "terracotta": "mid",
+  "white_terracotta": "mid",
+  "orange_terracotta": "mid",
+  "light_gray_terracotta": "mid",
+  "yellow_terracotta": "mid",
+  "oak_planks": "mid",
+  "spruce_planks": "mid",
+  "birch_planks": "mid",
+  "jungle_planks": "mid",
+  "acacia_planks": "mid",
+  "dark_oak_planks": "mid",
+  "mangrove_planks": "mid",
+  "cherry_planks": "mid",
+  "bamboo_planks": "mid",
+  "pale_oak_planks": "mid",
+  "poplar_planks": "mid",
+  "crimson_planks": "mid",
+  "warped_planks": "mid",
+  "prismarine_bricks": "mid",
+  "dark_prismarine": "mid",
+  "nether_bricks": "mid",
+  "red_nether_bricks": "mid",
+  "end_stone_bricks": "mid",
+  "purpur_block": "mid",
+  "quartz_block": "mid",
+  "quartz_pillar": "mid",
+  "cut_copper": "mid",
+  "exposed_cut_copper": "mid",
+  "waxed_exposed_cut_copper": "mid",
+  "copper_block": "mid",
+  "polished_blackstone_bricks": "mid",
+  "sandstone": "mid",
+  "chiseled_sandstone": "mid",
+  "chiseled_quartz_block": "mid",
+  "chiseled_tuff": "mid",
+  "chiseled_stone_bricks": "mid",
+  "stripped_oak_log": "mid",
+  "stripped_spruce_log": "mid",
+  "stripped_birch_log": "mid",
+  "stripped_cherry_log": "mid",
+  "stripped_poplar_log": "mid",
+  "stripped_dark_oak_log": "mid",
+  "stripped_pale_oak_log": "mid",
+  "stripped_crimson_stem": "mid",
+  "stripped_warped_stem": "mid",
+  "cobblestone": "loud",
+  "mossy_cobblestone": "loud",
+  "granite": "loud",
+  "diorite": "loud",
+  "andesite": "loud",
+  "gravel": "loud",
+  "blackstone": "loud",
+  "gilded_blackstone": "loud",
+  "crying_obsidian": "loud",
+  "prismarine": "loud",
+  "amethyst_block": "loud",
+  "cobbled_deepslate": "loud",
+  "tuff": "loud",
+  "deepslate": "loud",
+  "basalt": "loud",
+  "calcite": "loud",
+  "sea_lantern": "loud",
+  "magma_block": "loud",
+  "mud": "loud",
+  "rooted_dirt": "loud"
+ },
+ "temperature": {
+  "smooth_sandstone": "warm",
+  "sandstone": "warm",
+  "cut_sandstone": "warm",
+  "cut_red_sandstone": "warm",
+  "red_sandstone": "warm",
+  "bricks": "warm",
+  "terracotta": "warm",
+  "white_terracotta": "warm",
+  "orange_terracotta": "warm",
+  "yellow_terracotta": "warm",
+  "granite": "warm",
+  "mud_bricks": "warm",
+  "packed_mud": "warm",
+  "copper_block": "warm",
+  "cut_copper": "warm",
+  "exposed_cut_copper": "warm",
+  "waxed_exposed_cut_copper": "warm",
+  "copper_grate": "warm",
+  "copper_trapdoor": "warm",
+  "copper_bulb": "warm",
+  "lightning_rod": "warm",
+  "oak_planks": "warm",
+  "oak_log": "warm",
+  "stripped_oak_log": "warm",
+  "acacia_planks": "warm",
+  "acacia_log": "warm",
+  "jungle_planks": "warm",
+  "mangrove_planks": "warm",
+  "mangrove_log": "warm",
+  "cherry_planks": "warm",
+  "cherry_log": "warm",
+  "stripped_cherry_log": "warm",
+  "crimson_planks": "warm",
+  "shroomlight": "warm",
+  "magma_block": "warm",
+  "deepslate": "cool",
+  "cobbled_deepslate": "cool",
+  "deepslate_bricks": "cool",
+  "deepslate_tiles": "cool",
+  "polished_deepslate": "cool",
+  "chiseled_deepslate": "cool",
+  "stone": "cool",
+  "smooth_stone": "cool",
+  "andesite": "cool",
+  "calcite": "cool",
+  "smooth_basalt": "cool",
+  "basalt": "cool",
+  "polished_basalt": "cool",
+  "quartz_block": "cool",
+  "smooth_quartz": "cool",
+  "quartz_bricks": "cool",
+  "chiseled_quartz_block": "cool",
+  "prismarine": "cool",
+  "prismarine_bricks": "cool",
+  "dark_prismarine": "cool",
+  "sea_lantern": "cool",
+  "soul_lantern": "cool",
+  "packed_ice": "cool",
+  "blue_ice": "cool",
+  "snow_block": "cool",
+  "warped_planks": "cool",
+  "stripped_warped_stem": "cool",
+  "tuff_bricks": "cool",
+  "polished_tuff": "cool",
+  "cyan_concrete": "cool",
+  "light_blue_concrete": "cool",
+  "blue_concrete": "cool",
+  "purple_concrete": "cool",
+  "tuff": "neutral",
+  "spruce_planks": "neutral",
+  "spruce_log": "neutral",
+  "stripped_spruce_log": "neutral",
+  "dark_oak_planks": "neutral",
+  "dark_oak_log": "neutral",
+  "stripped_dark_oak_log": "neutral",
+  "gray_concrete": "neutral",
+  "polished_blackstone": "neutral",
+  "polished_blackstone_bricks": "neutral",
+  "blackstone": "neutral",
+  "nether_bricks": "neutral",
+  "end_stone_bricks": "neutral",
+  "poplar_planks": "neutral",
+  "pale_oak_planks": "neutral"
+ },
+ "goodPrimaries": [
+  "stone_bricks",
+  "smooth_sandstone",
+  "spruce_planks",
+  "terracotta",
+  "polished_deepslate",
+  "white_concrete",
+  "bricks",
+  "mud_bricks"
+ ],
+ "badPrimaries": [
+  "diorite",
+  "granite",
+  "gilded_blackstone",
+  "sea_lantern",
+  "amethyst_block",
+  "cobblestone",
+  "mossy_cobblestone",
+  "prismarine",
+  "gravel",
+  "magma_block"
+ ]
+}
