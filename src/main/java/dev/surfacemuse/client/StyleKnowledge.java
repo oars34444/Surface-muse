@@ -130,6 +130,10 @@ public final class StyleKnowledge {
         return score;
     }
 
+    public String temperatureOf(String blockId) {
+        return blockId == null ? null : data.temperature.get(blockId);
+    }
+
     public boolean hasPairingFor(String baseId) {
         return baseId != null && data.pairings.containsKey(baseId);
     }

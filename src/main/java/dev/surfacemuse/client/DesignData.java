@@ -209,7 +209,8 @@ public final class DesignData {
      * accent pick, both drawn from diversified ranked lists so every design
      * previews a distinct palette.
      */
-    public static List<Suggestion> suggest(BlockState state, Direction side) {
+    public static List<Suggestion> suggest(BlockState state, Direction side,
+                                               Surroundings.Context context) {
         List<Design> designs = designsFor(kindOf(side));
         List<Block> pool = PalettePool.resolve();
         if (pool.isEmpty()) {
@@ -218,9 +219,9 @@ public final class DesignData {
 
         int count = designs.size();
         List<SuggestionEngine.Scored> details = SuggestionEngine.diversify(
-                SuggestionEngine.scoreAll(state, pool, false), count);
+                SuggestionEngine.scoreAll(state, pool, context, false), count);
         List<SuggestionEngine.Scored> accents = SuggestionEngine.diversify(
-                SuggestionEngine.scoreAll(state, pool, true), count);
+                SuggestionEngine.scoreAll(state, pool, context, true), count);
         if (details.isEmpty() || accents.isEmpty()) {
             return List.of();
         }
