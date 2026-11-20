@@ -1,6 +1,6 @@
 # Surface Muse (1.21.x port)
 
-This branch targets **Minecraft 1.21.x** with Yarn mappings and JDK 21.Use branch layout:
+This branch targets **Minecraft 1.21.1** with Yarn mappings and JDK 21.Use branch layout:
 
 | Branch | Minecraft | Mappings | JDK |
 |---|---|---|---|
@@ -75,9 +75,9 @@ Fabric Loader 0.20.1, Fabric API 0.166.2+26.3, and (optionally) Litematica.
 
 ## Version pins (this branch)
 
-- Minecraft `1.21.11`, Yarn `1.21.11+build.6`
-- Fabric Loader `0.16.14`, Fabric API `0.141.6+1.21.11`
-- Loom `1.11-SNAPSHOT`
+- Minecraft `1.21.1`, Yarn `1.21.1+build.3`
+- Fabric Loader `0.16.5`, Fabric API `0.116.4+1.21.1`
+- Loom `1.7-SNAPSHOT`
 
 ## How the suggestion engine works
 
