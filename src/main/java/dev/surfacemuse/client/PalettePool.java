@@ -1,8 +1,8 @@
 package dev.surfacemuse.client;
 
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.registry.Registries;
+import net.minecraft.util.Identifier;
+import net.minecraft.block.Block;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,8 +65,8 @@ public final class PalettePool {
     public static List<Block> resolve() {
         List<Block> pool = new ArrayList<>();
         for (String id : CANDIDATE_IDS) {
-            Block block = BuiltInRegistries.BLOCK
-                    .get(ResourceLocation.fromNamespaceAndPath("minecraft", id));
+            Block block = Registries.BLOCK
+                    .get(Identifier.of("minecraft", id));
             if (block != null && !pool.contains(block)) {
                 pool.add(block);
             }

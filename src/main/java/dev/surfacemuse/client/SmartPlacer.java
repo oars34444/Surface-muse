@@ -1,16 +1,16 @@
 package dev.surfacemuse.client;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.registry.Registries;
+import net.minecraft.text.Text;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,18 +75,18 @@ public final class SmartPlacer {
             "dropper", "spawner"
     };
 
-    public static Surface discoverSurface(Level world, BlockPos anchor, Direction face) {
+    public static Surface discoverSurface(World world, BlockPos anchor, Direction face) {
         Direction tangent = face == Direction.UP || face == Direction.DOWN
                 ? Direction.EAST
                 : (face.getAxis() == Direction.Axis.X ? Direction.SOUTH : Direction.EAST);
 
-        BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos(
+        BlockPos.MutableBlockPos cursor = new BlockPos.Mutable(
                 anchor.getX(), anchor.getY(), anchor.getZ());
         while (surfaceCellValid(world, cursor)) {
             cursor.move(Direction.DOWN);
         }
         cursor.move(Direction.UP);
-        BlockPos bottom = cursor.immutable();
+        BlockPos bottom = cursor.toImmutable();
 
         int height = 0;
         cursor.set(bottom.getX(), bottom.getY(), bottom.getZ());
@@ -99,12 +99,12 @@ public final class SmartPlacer {
         int right = Math.min(scan(world, anchor, tangent, MAX_SPAN - 1), MAX_SPAN - 1);
 
         return new Surface(tangent, left + right + 1, height,
-                bottom.relative(tangent, -left));
+                bottom.offset(tangent, -left));
     }
 
-    private static int scan(Level world, BlockPos anchor, Direction dir, int cap) {
+    private static int scan(World world, BlockPos anchor, Direction dir, int cap) {
         int n = 0;
-        BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos(
+        BlockPos.MutableBlockPos cursor = new BlockPos.Mutable(
                 anchor.getX(), anchor.getY(), anchor.getZ());
         while (n < cap) {
             cursor.move(dir);
@@ -116,12 +116,12 @@ public final class SmartPlacer {
         return n;
     }
 
-    private static boolean surfaceCellValid(Level world, BlockPos pos) {
+    private static boolean surfaceCellValid(World world, BlockPos pos) {
         BlockState state = world.getBlockState(pos);
         if (state.isAir()) {
             return false;
         }
-        String id = BuiltInRegistries.BLOCK.getKey(state.getBlock()).getPath();
+        String id = Registries.BLOCK.getId(state.getBlock()).getPath();
         for (String hint : NEVER_REPLACE_HINTS) {
             if (id.contains(hint)) {
                 return false;
@@ -130,13 +130,13 @@ public final class SmartPlacer {
         return true;
     }
 
-    private static boolean familyMatches(Level world, BlockPos pos, String baseId,
+    private static boolean familyMatches(World world, BlockPos pos, String baseId,
                                          String baseClass) {
         BlockState state = world.getBlockState(pos);
         if (state.isAir()) {
             return false;
         }
-        String id = BuiltInRegistries.BLOCK.getKey(state.getBlock()).getPath();
+        String id = Registries.BLOCK.getId(state.getBlock()).getPath();
         if (id.equals(baseId)) {
             return true;
         }
@@ -144,12 +144,12 @@ public final class SmartPlacer {
         return cellClass.equals(baseClass);
     }
 
-    public static Plan plan(Level world, BlockPos anchor, Direction face, Block baseBlock,
+    public static Plan plan(World world, BlockPos anchor, Direction face, Block baseBlock,
                             DesignData.Design design,
                             SuggestionEngine.Scored detail,
                             SuggestionEngine.Scored accent) {
         Surface surface = discoverSurface(world, anchor, face);
-        String baseId = BuiltInRegistries.BLOCK.getKey(baseBlock).getPath();
+        String baseId = Registries.BLOCK.getId(baseBlock).getPath();
         String baseClass = SuggestionEngine.materialClass(SuggestionEngine.tokens(baseId));
 
         List<PlanEntry> entries = new ArrayList<>();
@@ -162,8 +162,8 @@ public final class SmartPlacer {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 BlockPos pos = surface.bottomLeft()
-                        .relative(surface.tangent(), j)
-                        .relative(Direction.UP, i);
+                        .offset(surface.tangent(), j)
+                        .offset(Direction.UP, i);
                 if (!surfaceCellValid(world, pos)
                         || !familyMatches(world, pos, baseId, baseClass)) {
                     continue;
@@ -183,7 +183,7 @@ public final class SmartPlacer {
                     continue;
                 }
 
-                entries.add(new PlanEntry(pos, target.defaultBlockState()));
+                entries.add(new PlanEntry(pos, target.getDefaultState()));
                 required.merge(target, 1, Integer::sum);
             }
         }
@@ -191,14 +191,21 @@ public final class SmartPlacer {
         return new Plan(anchor, surface, entries, required);
     }
 
-    public static boolean checkInventory(ServerPlayer player, Plan plan,
-                                         List<Component> shortages) {
+    public static boolean checkInventory(ServerPlayerEntity player, Plan plan,
+                                         List<Text> shortages) {
         for (Map.Entry<Block, Integer> need : plan.required().entrySet()) {
-            Item item = need.getKey().asItem();
-            int have = player.getInventory().countItem(item);
+            Item item = need.getId().asItem();
+            int have = 0;
+            var inventory = player.getInventory();
+            for (int slot = 0; slot < inventory.size(); slot++) {
+                if (!inventory.getStack(slot).isEmpty()
+                        && inventory.getStack(slot).getItem() == item) {
+                    have += inventory.getStack(slot).getCount();
+                }
+            }
             if (have < need.getValue()) {
-                shortages.add(Component.literal(
-                        need.getKey().getName().getString()
+                shortages.add(Text.literal(
+                        need.getId().getName().getString()
                                 + ": need " + (need.getValue() - have) + " more"));
             }
         }
@@ -209,37 +216,37 @@ public final class SmartPlacer {
      * Returns the number of blocks placed, -1 for "blocked, reason
      * reported", or -2 for "unsupported mode".
      */
-    public static int apply(net.minecraft.client.Minecraft client, Plan plan) {
+    public static int apply(MinecraftClient client, Plan plan) {
         if (plan.size() == 0) {
             if (client.player != null) {
-                client.player.displayClientMessage(
-                        Component.literal("[Surface Muse] nothing to place here - "
+                client.player.sendMessage(
+                        Text.literal("[Surface Muse] nothing to place here - "
                                 + "the surface scan found no matching cells."), false);
             }
             return 0;
         }
 
-        if (client.hasSingleplayerServer() && client.getSingleplayerServer() != null
+        if (client.getServer() != null && client.getServer() != null
                 && client.player != null) {
-            var server = client.getSingleplayerServer();
-            ServerLevel level = server.getLevel(client.player.level().dimension());
+            var server = client.getServer();
+            ServerWorld level = server.getWorld(client.player.getWorld().getRegistryKey());
             if (level == null) {
                 return -2;
             }
-            ServerPlayer serverPlayer =
-                    server.getPlayerList().getPlayer(client.player.getUUID());
+            ServerPlayerEntity serverPlayer =
+                    server.getPlayerManager().getPlayer(client.player.getUUID());
             if (serverPlayer == null) {
                 return -2;
             }
 
             if (!serverPlayer.isCreative()) {
-                List<Component> shortages = new ArrayList<>();
+                List<Text> shortages = new ArrayList<>();
                 if (!checkInventory(serverPlayer, plan, shortages)) {
-                    serverPlayer.displayClientMessage(
-                            Component.literal("[Surface Muse] missing materials:"), false);
-                    for (Component shortage : shortages) {
-                        serverPlayer.displayClientMessage(
-                                Component.literal("  - " + shortage.getString()), false);
+                    serverPlayer.sendMessage(
+                            Text.literal("[Surface Muse] missing materials:"), false);
+                    for (Text shortage : shortages) {
+                        serverPlayer.sendMessage(
+                                Text.literal("  - " + shortage.getString()), false);
                     }
                     return -1;
                 }
@@ -247,13 +254,13 @@ public final class SmartPlacer {
 
             int placed = 0;
             for (PlanEntry entry : plan.entries()) {
-                level.setBlock(entry.pos(), entry.state(), 3);
+                level.setBlockState(entry.pos(), entry.state(), 3);
                 placed++;
             }
 
             if (!serverPlayer.isCreative()) {
                 for (Map.Entry<Block, Integer> need : plan.required().entrySet()) {
-                    removeItems(serverPlayer, need.getKey().asItem(), need.getValue());
+                    removeItems(serverPlayer, need.getId().asItem(), need.getValue());
                 }
             }
             return placed;
@@ -262,9 +269,9 @@ public final class SmartPlacer {
         if (client.player != null && client.player.isCreative()
                 && client.getConnection() != null) {
             for (PlanEntry entry : plan.entries()) {
-                String id = BuiltInRegistries.BLOCK.getKey(entry.state().getBlock())
+                String id = Registries.BLOCK.getId(entry.state().getBlock())
                         .toString();
-                client.getConnection().sendCommand(
+                client.getNetworkHandler().sendCommand(
                         "setblock " + entry.pos().getX() + " " + entry.pos().getY()
                                 + " " + entry.pos().getZ() + " " + id);
             }
@@ -272,22 +279,22 @@ public final class SmartPlacer {
         }
 
         if (client.player != null) {
-            client.player.displayClientMessage(
-                    Component.literal("[Surface Muse] smart placement needs "
+            client.player.sendMessage(
+                    Text.literal("[Surface Muse] smart placement needs "
                             + "singleplayer (or creative + setblock permission "
                             + "on servers)."), false);
         }
         return -2;
     }
 
-    private static void removeItems(ServerPlayer player, Item item, int count) {
+    private static void removeItems(ServerPlayerEntity player, Item item, int count) {
         int left = count;
         var inventory = player.getInventory();
-        for (int slot = 0; slot < inventory.getContainerSize() && left > 0; slot++) {
-            ItemStack stack = inventory.getItem(slot);
+        for (int slot = 0; slot < inventory.size() && left > 0; slot++) {
+            ItemStack stack = inventory.getStack(slot);
             if (!stack.isEmpty() && stack.getItem() == item) {
                 int take = Math.min(left, stack.getCount());
-                stack.shrink(take);
+                stack.decrement(take);
                 left -= take;
             }
         }

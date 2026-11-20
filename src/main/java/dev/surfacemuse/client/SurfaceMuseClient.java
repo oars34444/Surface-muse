@@ -1,50 +1,50 @@
 package dev.surfacemuse.client;
 
-import net.minecraft.client.KeyMapping;
-import net.minecraft.client.Minecraft;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
-import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.util.InputUtil;
+import net.minecraft.text.Text;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.block.BlockState;
 import org.lwjgl.glfw.GLFW;
 
 public class SurfaceMuseClient implements ClientModInitializer {
 
-    private static KeyMapping openDesigns;
+    private static KeyBinding openDesigns;
 
     @Override
     public void onInitializeClient() {
-        openDesigns = KeyBindingHelper.registerKeyBinding(new KeyMapping(
+        openDesigns = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.surfacemuse.open",
-                InputConstants.Type.KEYSYM,
+                InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_K,
                 "key.category.surfacemuse"));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            while (openDesigns.consumeClick()) {
+            while (openDesigns.wasPressed()) {
                 tryOpenScreen(client);
             }
         });
     }
 
-    private static void tryOpenScreen(Minecraft client) {
-        if (client.player == null || client.level == null) {
+    private static void tryOpenScreen(MinecraftClient client) {
+        if (client.player == null || client.world == null) {
             return;
         }
-        HitResult hit = client.hitResult;
+        HitResult hit = client.crosshairTarget;
         if (!(hit instanceof BlockHitResult blockHit) || hit.getType() != HitResult.Type.BLOCK) {
             message(client, "surfacemuse.no_target");
             return;
         }
         BlockPos anchor = blockHit.getBlockPos();
-        Direction face = blockHit.getDirection();
-        BlockState base = client.level.getBlockState(anchor);
+        Direction face = blockHit.getSide();
+        BlockState base = client.world.getBlockState(anchor);
         var suggestions = DesignData.suggest(base, face);
         if (suggestions.isEmpty()) {
             message(client, "surfacemuse.unsupported");
@@ -54,9 +54,9 @@ public class SurfaceMuseClient implements ClientModInitializer {
         client.setScreen(new DesignScreen(base, kind, suggestions, anchor, face));
     }
 
-    private static void message(Minecraft client, String key) {
+    private static void message(MinecraftClient client, String key) {
         if (client.player != null) {
-            client.player.displayClientMessage(Component.translatable(key), true);
+            client.player.sendMessage(Text.translatable(key), true);
         }
     }
 }

@@ -1,6 +1,14 @@
-# Surface Muse
+# Surface Muse (1.21.x port)
 
-A client-side Fabric mod for Minecraft 26.3 (Wilderness Bound) — a building-inspiration
+This branch targets **Minecraft 1.21.x** with Yarn mappings and JDK 21.Use branch layout:
+
+| Branch | Minecraft | Mappings | JDK |
+|---|---|---|---|
+| `main` | 26.3 | Mojang (unobfuscated) | 25 |
+| `v/1.21.11` | 1.21.11 | Yarn | 21 |
+| `v/1.21.1` | 1.21.1 | Yarn | 21 |
+
+A client-side Fabric mod for the 1.21.x era — a building-inspiration
 companion that pairs nicely with Litematica.
 
 ## What it does
@@ -55,23 +63,21 @@ server without installation. A natural workflow:
 
 ## Building
 
-Requires **JDK 25** and **Gradle 9.7+** (Minecraft 26.x needs Java 25; the new Loom
-needs Gradle 9.7). No Gradle wrapper is committed — generate it locally:
+Requires **JDK 21** and Gradle 8.8+. No Gradle wrapper is committed — generate it locally:
 
 ```bash
-gradle wrapper --gradle-version 9.7.1
+gradle wrapper --gradle-version 8.12
 ./gradlew build
 ```
 
 The jar appears in `build/libs/surface-muse-0.1.0.jar`. Drop it in `mods/` together with
 Fabric Loader 0.20.1, Fabric API 0.166.2+26.3, and (optionally) Litematica.
 
-## Version pins
+## Version pins (this branch)
 
-- Minecraft `26.3`
-- Fabric Loader `0.20.1`, Fabric API `0.166.2+26.3`
-- Loom `1.19-SNAPSHOT` (plugin id `net.fabricmc.fabric-loom`)
-- Since 26.1 the game jar is unobfuscated: no mappings dependency, no `modImplementation`.
+- Minecraft `1.21.11`, Yarn `1.21.11+build.6`
+- Fabric Loader `0.16.14`, Fabric API `0.141.6+1.21.11`
+- Loom `1.11-SNAPSHOT`
 
 ## How the suggestion engine works
 

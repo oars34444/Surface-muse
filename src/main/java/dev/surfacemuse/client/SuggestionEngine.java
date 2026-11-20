@@ -1,8 +1,8 @@
 package dev.surfacemuse.client;
 
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.registry.Registries;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -279,7 +279,7 @@ public final class SuggestionEngine {
     }
 
     public static String name(Block block) {
-        return BuiltInRegistries.BLOCK.getKey(block).getPath();
+        return Registries.BLOCK.getId(block).getPath();
     }
 
     /**

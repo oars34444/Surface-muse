@@ -1,16 +1,16 @@
 package dev.surfacemuse.client;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
+import net.minecraft.util.Formatting;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.network.chat.CommonComponents;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.screen.ScreenTexts;
+import net.minecraft.text.Text;
+import net.minecraft.item.ItemStack;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -59,7 +59,7 @@ public class DesignScreen extends Screen {
     public DesignScreen(BlockState baseState, DesignData.SurfaceKind kind,
                         List<DesignData.Suggestion> suggestions, BlockPos anchor,
                         Direction face) {
-        super(Component.literal("Surface Muse - "
+        super(Text.literal("Surface Muse - "
                 + kind.label.toLowerCase(java.util.Locale.ROOT)));
         this.baseState = baseState;
         this.kind = kind;
@@ -76,32 +76,32 @@ public class DesignScreen extends Screen {
         listTop = panelY + 32;
         previewX = listX + listW + 14;
 
-        addRenderableWidget(Button.builder(
-                        Component.literal("Place").withStyle(ChatFormatting.GREEN),
+        addDrawableChild(ButtonWidget.builder(
+                        Text.literal("Place").withStyle(Formatting.GREEN),
                         button -> applySelected())
-                .bounds(panelX + panelW - 78, panelY + panelH - 26, 70, 20)
+                .dimensions(panelX + panelW - 78, panelY + panelH - 26, 70, 20)
                 .build());
-        addRenderableWidget(Button.builder(
-                        CommonComponents.GUI_DONE,
-                        button -> onClose())
-                .bounds(panelX + 8, panelY + panelH - 26, 70, 20)
+        addDrawableChild(ButtonWidget.builder(
+                        ScreenTexts.DONE,
+                        button -> close())
+                .dimensions(panelX + 8, panelY + panelH - 26, 70, 20)
                 .build());
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+    public void render(DrawContext context, int mouseX, int mouseY, float partialTick) {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         rowTops.clear();
         rowBottoms.clear();
 
         drawPanel(guiGraphics, panelX, panelY, panelW, panelH);
-        guiGraphics.drawCenteredString(this.font, this.title,
+        context.drawCenteredTextWithShadow(this.textRenderer, this.title,
                 this.width / 2, panelY + 6, 0x404040);
 
-        guiGraphics.drawString(this.font,
-                Component.literal("Base: "
+        context.drawText(this.textRenderer,
+                Text.literal("Base: "
                         + this.baseState.getBlock().getName().getString())
-                        .withStyle(ChatFormatting.DARK_GRAY),
+                        .withStyle(Formatting.DARK_GRAY),
                 panelX + 8, panelY + 17, 0xFFFFFF, false);
 
         int last = Math.min(listScroll + VISIBLE_ROWS, suggestions.size());
@@ -113,9 +113,9 @@ public class DesignScreen extends Screen {
             boolean isSel = i == selected;
             drawCellBackground(guiGraphics, listX, y, listW, 18, isSel || hovered);
 
-            guiGraphics.renderItem(stackFor('s', suggestion), listX + 2, y + 1);
-            guiGraphics.drawString(this.font,
-                    Component.literal((isSel ? "> " : "  ")
+            context.drawItem(stackFor('s', suggestion), listX + 2, y + 1);
+            context.drawText(this.textRenderer,
+                    Text.literal((isSel ? "> " : "  ")
                             + suggestion.design().title()),
                     listX + 21, y + 5, isSel ? 0xFFFFFF : 0x404040, false);
             rowTops.add(y);
@@ -136,7 +136,7 @@ public class DesignScreen extends Screen {
                             16, 16, false);
                     ItemStack stack = stackFor(line.charAt(col), sel);
                     if (stack != null) {
-                        guiGraphics.renderItem(stack,
+                        context.drawItem(stack,
                                 previewX + col * CELL + 1,
                                 previewTop + row * CELL + 1);
                     }
@@ -144,23 +144,23 @@ public class DesignScreen extends Screen {
             }
 
             int textY = previewTop + rows * CELL + 8;
-            guiGraphics.drawString(this.font,
-                    Component.literal(sel.design().title())
-                            .withStyle(ChatFormatting.DARK_GREEN),
+            context.drawText(this.textRenderer,
+                    Text.literal(sel.design().title())
+                            .withStyle(Formatting.DARK_GREEN),
                     previewX, textY, 0xFFFFFF, false);
-            guiGraphics.drawString(this.font,
-                    Component.literal("Detail: "
+            context.drawText(this.textRenderer,
+                    Text.literal("Detail: "
                             + sel.secondary().block().getName().getString()),
                     previewX, textY + 11, 0x404040, false);
             if (sel.accent() != null) {
-                guiGraphics.drawString(this.font,
-                        Component.literal("Accent: "
+                context.drawText(this.textRenderer,
+                        Text.literal("Accent: "
                                 + sel.accent().block().getName().getString()),
                         previewX, textY + 22, 0x404040, false);
             }
-            guiGraphics.drawString(this.font,
-                    Component.literal(sel.secondary().explanation())
-                            .withStyle(ChatFormatting.DARK_GRAY),
+            context.drawText(this.textRenderer,
+                    Text.literal(sel.secondary().explanation())
+                            .withStyle(Formatting.DARK_GRAY),
                     previewX, textY + (sel.accent() != null ? 33 : 22) + 10,
                     0xFFFFFF, false);
         }
@@ -170,7 +170,7 @@ public class DesignScreen extends Screen {
      * Classic beveled panel, matching the container-screen look: a dark outer
      * edge, a light left/top ridge, and a darker right/bottom trough.
      */
-    private void drawPanel(GuiGraphics g, int x, int y, int w, int h) {
+    private void drawPanel(DrawContext g, int x, int y, int w, int h) {
         g.fill(x, y, x + w, y + h, PANEL_FILL);
         g.fill(x + 1, y + 1, x + w - 1, y + h - 1, PANEL_DARK_SHADOW);
         g.fill(x + 2, y + 2, x + w - 2, y + h - 2, PANEL_FILL);
@@ -181,7 +181,7 @@ public class DesignScreen extends Screen {
     }
 
     /** Inventory-slot look: recessed dark border on a gray cell body. */
-    private void drawCellBackground(GuiGraphics g, int x, int y, int w, int h,
+    private void drawCellBackground(DrawContext g, int x, int y, int w, int h,
                                     boolean highlighted) {
         g.fill(x, y, x + w, y + h, PANEL_DARK_SHADOW);
         g.fill(x + 1, y + 1, x + w - 1, y + h - 1,
@@ -260,13 +260,13 @@ public class DesignScreen extends Screen {
     }
 
     private void sendPaletteToChat() {
-        if (this.minecraft == null || this.minecraft.player == null
+        if (this.client == null || this.client.player == null
                 || suggestions.isEmpty()) {
             return;
         }
         DesignData.Suggestion sel = suggestions.get(selected);
-        this.minecraft.player.displayClientMessage(
-                Component.literal("[Surface Muse] " + kind.label + ": "
+        this.client.player.displayClientMessage(
+                Text.literal("[Surface Muse] " + kind.label + ": "
                         + sel.design().title()
                         + " | base: " + baseState.getBlock().getName().getString()
                         + " | detail: " + sel.secondary().block().getName().getString()
@@ -279,23 +279,23 @@ public class DesignScreen extends Screen {
     }
 
     private void applySelected() {
-        if (this.minecraft == null || this.minecraft.level == null
+        if (this.client == null || this.client.level == null
                 || suggestions.isEmpty()) {
             return;
         }
         DesignData.Suggestion sel = suggestions.get(selected);
         SmartPlacer.Plan plan = SmartPlacer.plan(
-                this.minecraft.level, anchor, face, baseState.getBlock(),
+                this.client.level, anchor, face, baseState.getBlock(),
                 sel.design(), sel.secondary(), sel.accent());
-        int result = SmartPlacer.apply(this.minecraft, plan);
-        if (result > 0 && this.minecraft.player != null) {
-            this.minecraft.player.displayClientMessage(
-                    Component.literal("[Surface Muse] applied " + sel.design().title()
+        int result = SmartPlacer.apply(this.client, plan);
+        if (result > 0 && this.client.player != null) {
+            this.client.player.displayClientMessage(
+                    Text.literal("[Surface Muse] applied " + sel.design().title()
                             + " - " + result + " blocks placed ("
                             + plan.surface().width() + "x" + plan.surface().height()
                             + " region)"),
                     true);
-            onClose();
+            close();
         }
     }
 }
