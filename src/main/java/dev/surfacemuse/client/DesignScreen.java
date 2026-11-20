@@ -40,6 +40,7 @@ public class DesignScreen extends Screen {
     private final List<DesignData.Suggestion> suggestions;
     private final BlockPos anchor;
     private final Direction face;
+    private final Surroundings.Context context;
     private final Map<Block, ItemStack> stackCache = new HashMap<>();
 
     private int selected = 0;
@@ -58,7 +59,7 @@ public class DesignScreen extends Screen {
 
     public DesignScreen(BlockState baseState, DesignData.SurfaceKind kind,
                         List<DesignData.Suggestion> suggestions, BlockPos anchor,
-                        Direction face) {
+                        Direction face, Surroundings.Context context) {
         super(Text.literal("Surface Muse - "
                 + kind.label.toLowerCase(java.util.Locale.ROOT)));
         this.baseState = baseState;
@@ -66,6 +67,7 @@ public class DesignScreen extends Screen {
         this.suggestions = suggestions;
         this.anchor = anchor;
         this.face = face;
+        this.context = context;
     }
 
     @Override
@@ -98,10 +100,14 @@ public class DesignScreen extends Screen {
         context.drawCenteredTextWithShadow(this.textRenderer, this.title,
                 this.width / 2, panelY + 6, 0x404040);
 
+        String header = "Base: "
+                + this.baseState.getBlock().getName().getString();
+        String nearbySummary = Surroundings.summary(context);
+        if (!nearbySummary.isEmpty()) {
+            header = header + " - nearby: " + nearbySummary;
+        }
         context.drawText(this.textRenderer,
-                Text.literal("Base: "
-                        + this.baseState.getBlock().getName().getString())
-                        .withStyle(Formatting.DARK_GRAY),
+                Text.literal(header).withStyle(Formatting.DARK_GRAY),
                 panelX + 8, panelY + 17, 0xFFFFFF, false);
 
         int last = Math.min(listScroll + VISIBLE_ROWS, suggestions.size());
@@ -274,7 +280,8 @@ public class DesignScreen extends Screen {
                         + (sel.accent() != null
                                 ? " | accent: "
                                 + sel.accent().block().getName().getString()
-                                : "")),
+                                : "")
+                        + (nearbySummary.isEmpty() ? "" : " | nearby: " + nearbySummary)),
                 false);
     }
 
