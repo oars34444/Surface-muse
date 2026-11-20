@@ -3,6 +3,18 @@
 A client-side Fabric mod for Minecraft 26.3 (Wilderness Bound) — a building-inspiration
 companion that pairs nicely with Litematica.
 
+## Supported versions
+
+Each Minecraft version lives on its own branch:
+
+| Branch | Minecraft | Mappings | JDK | Loom plugin |
+|---|---|---|---|---|
+| `main` | 26.3 | Mojang (unobfuscated) | 25 | `net.fabricmc.fabric-loom` |
+| `v/1.21.11` | 1.21.11 | Yarn `1.21.11+build.6` | 21 | `fabric-loom` |
+| `v/1.21.1` | 1.21.1 | Yarn `1.21.1+build.3` | 21 | `fabric-loom` |
+
+Check out the branch for your game version before building.
+
 ## What it does
 
 Look at any wall, floor, or ceiling and press **K** (rebindable in Controls → Surface Muse).
