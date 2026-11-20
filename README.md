@@ -80,8 +80,8 @@ Fabric Loader 0.20.1, Fabric API 0.166.2+26.3, and (optionally) Litematica.
 
 ## Version pins
 
-- Minecraft `26.3`
-- Fabric Loader `0.20.1`, Fabric API `0.166.2+26.3`
+- Minecraft `26.2`
+- Fabric Loader `0.20.1`, Fabric API `0.161.0+26.2`
 - Loom `1.19-SNAPSHOT` (plugin id `net.fabricmc.fabric-loom`)
 - Since 26.1 the game jar is unobfuscated: no mappings dependency, no `modImplementation`.
 

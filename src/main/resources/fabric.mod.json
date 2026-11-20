@@ -4,7 +4,9 @@
   "version": "${version}",
   "name": "Surface Muse",
   "description": "A building-helper companion for Litematica: look at a wall, floor, or ceiling, press a key, and browse design suggestions rendered with blocks that match the surface you are looking at.",
-  "authors": ["you"],
+  "authors": [
+    "you"
+  ],
   "license": "MIT",
   "environment": "client",
   "entrypoints": {
@@ -15,7 +17,7 @@
   "depends": {
     "fabricloader": ">=0.20.0",
     "fabric-api": "*",
-    "minecraft": ">=26.3 <27.0",
+    "minecraft": ">=26.2 <26.3",
     "java": ">=25"
   },
   "suggests": {
