@@ -1,0 +1,9 @@
+{
+  "key.category.surfacemuse": "Surface Muse",
+  "key.surfacemuse.open": "Suggest designs for looked-at surface",
+  "surfacemuse.no_target": "Look at a wall, floor, or ceiling first.",
+  "surfacemuse.unsupported": "Surface Muse has no suggestions for this block yet.",
+  "surfacemuse.parent_block": "Base block: %s",
+  "surfacemuse.secondary": "Detail block: %s",
+  "surfacemuse.accent": "Accent block: %s"
+}
